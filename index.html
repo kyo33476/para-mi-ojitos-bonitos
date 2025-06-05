@@ -3,66 +3,88 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Para Victoria</title>
+  <title>Victoria - Mi Estrella</title>
   <style>
     body {
-      background: linear-gradient(to bottom right, #ffe6f0, #f5f5dc);
-      color: #cc3366;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ffe6f0, #e0f7fa);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .message {
+      z-index: 1;
       text-align: center;
-      padding: 60px 20px;
-      animation: fadeIn 2s ease-in;
+      color: #6a1b9a;
+      padding: 20px;
     }
 
     h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
-      color: #b03060;
-    }
-
-    h2 {
-      font-size: 28px;
-      margin-top: 0;
-      color: #7a297a;
+      font-size: 60px;
+      margin: 10px 0;
     }
 
     p {
-      font-size: 22px;
-      line-height: 1.6;
-      margin-top: 30px;
-      color: #5e4b56;
-    }
-
-    .heart {
-      font-size: 70px;
-      animation: latir 1s infinite;
-      margin-top: 20px;
-    }
-
-    @keyframes latir {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      font-size: 24px;
+      margin: 0;
     }
   </style>
 </head>
 <body>
-  <div class="heart">❤️</div>
-  <h1>Para Victoria</h1>
-  <h2>El amor de mi vida</h2>
-  <p>
-    Eres y siempre serás mi niña de ojitos bonitos,<br>
-    y recuerda amor que siempre estaré para ti en todo,<br>
-    te amo no solo con el corazón, sino con mi alma.
-  </p>
-
+  <canvas id="stars"></canvas>
+  <div class="message">
+    <h1>Victoria</h1>
+    <p>Eres mi cielo, mi estrella más brillante</p>
+  </div>
   <audio autoplay loop>
-    <source src="Kevin-Karl-San Lucas-Letra(MP3_160K).mp3" type="audio/mpeg">
+    <source src="cancion.mp3" type="audio/mpeg">
     Tu navegador no soporta audio HTML5.
   </audio>
+  <script>
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    const stars = Array.from({ length: 200 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 1.5 + 0.5,
+      dx: (Math.random() - 0.5) * 0.2,
+      dy: (Math.random() - 0.5) * 0.2
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      for (const star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        ctx.fillStyle = "#fff";
+        ctx.fill();
+        star.x += star.dx;
+        star.y += star.dy;
+        if (star.x < 0 || star.x > width) star.dx *= -1;
+        if (star.y < 0 || star.y > height) star.dy *= -1;
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+    window.onresize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+  </script>
 </body>
 </html>
